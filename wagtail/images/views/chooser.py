@@ -60,6 +60,7 @@ def get_chooser_context(request):
         'is_searching': False,
         'query_string': None,
         'will_select_format': request.GET.get('select_format'),
+        'multiple': request.GET.get('multiple'),
         'popular_tags': popular_tags_for_model(get_image_model()),
         'collections': collections,
     }
@@ -136,6 +137,23 @@ def image_chosen(request, image_id):
         request, None, None,
         None, json_data={'step': 'image_chosen', 'result': get_image_result_data(image)}
     )
+
+
+def image_chosen_multiple(request, image_ids):
+    image_ids = image_ids.split(',')
+    images = []
+    for image_id in image_ids:
+        image = get_object_or_404(get_image_model(), id=image_id)
+        images.append(get_image_result_data(image))
+
+    return render_modal_workflow(
+        request, None, None,
+        None, json_data={'step': 'image_chosen', 'result': images}
+    )
+    # return render_modal_workflow(
+    #     request, None, 'wagtailimages/chooser/image_chosen.js',
+    #     {'image_json': images}
+    # )
 
 
 @permission_checker.require('add')

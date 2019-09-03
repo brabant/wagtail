@@ -19,6 +19,7 @@ urlpatterns = [
 
     url(r'^chooser/$', chooser.chooser, name='chooser'),
     url(r'^chooser/(\d+)/$', chooser.image_chosen, name='image_chosen'),
+    url(r'^chooser/multiple/([0-9,]+)/$', chooser.image_chosen_multiple, name='image_chosen_multiple'),
     url(r'^chooser/upload/$', chooser.chooser_upload, name='chooser_upload'),
     url(r'^chooser/(\d+)/select_format/$', chooser.chooser_select_format, name='chooser_select_format'),
 ]

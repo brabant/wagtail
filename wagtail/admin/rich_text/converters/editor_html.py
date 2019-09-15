@@ -4,7 +4,7 @@ from django.utils.html import escape
 from wagtail.core.models import Page
 from wagtail.core.rich_text import features as feature_registry
 from wagtail.core.rich_text.rewriters import EmbedRewriter, LinkRewriter, MultiRuleRewriter
-from wagtail.core.whitelist import Whitelister, allow_without_attributes
+from wagtail.core.whitelist import Whitelister, allow_without_attributes, allow_align
 
 
 class WhitelistRule:
@@ -29,8 +29,8 @@ class LinkTypeRule:
 
 BASE_WHITELIST_RULES = {
     '[document]': allow_without_attributes,
-    'p': allow_without_attributes,
-    'div': allow_without_attributes,
+    'p': allow_align,
+    'div': allow_align,
     'br': allow_without_attributes,
 }
 

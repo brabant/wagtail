@@ -30,6 +30,24 @@ def check_url(url_string):
     return url_string
 
 
+def check_style(style_string):
+    # remove bad styles
+
+    allowed_styles = {
+        'text-align': ('right', 'center')
+    }
+    ret_styles = []
+    unescaped = style_string.lower()
+    for style in unescaped.split(';'):
+        try:
+            (name, value) = map(str.strip, style.split(":"))
+            if value in allowed_styles[name]:
+                ret_styles.append("%s:%s" % (name, value))
+        except (ValueError, KeyError) as e:
+            pass
+    return ";".join(ret_styles)
+
+
 def attribute_rule(allowed_attrs):
     """
     Generator for functions that can be used as entries in Whitelister.element_rules.
@@ -62,28 +80,29 @@ def attribute_rule(allowed_attrs):
 
 
 allow_without_attributes = attribute_rule({})
+allow_align = attribute_rule({'style': check_style})
 
 
 DEFAULT_ELEMENT_RULES = {
     '[document]': allow_without_attributes,
-    'a': attribute_rule({'href': check_url}),
+    'a': attribute_rule({'href': check_url, 'target': True}),
     'b': allow_without_attributes,
     'br': allow_without_attributes,
     'div': allow_without_attributes,
     'em': allow_without_attributes,
-    'h1': allow_without_attributes,
-    'h2': allow_without_attributes,
-    'h3': allow_without_attributes,
-    'h4': allow_without_attributes,
-    'h5': allow_without_attributes,
-    'h6': allow_without_attributes,
+    'h1': allow_align,
+    'h2': allow_align,
+    'h3': allow_align,
+    'h4': allow_align,
+    'h5': allow_align,
+    'h6': allow_align,
     'hr': allow_without_attributes,
     'i': allow_without_attributes,
     'img': attribute_rule({'src': check_url, 'width': True, 'height': True,
                            'alt': True}),
     'li': allow_without_attributes,
     'ol': allow_without_attributes,
-    'p': allow_without_attributes,
+    'p': allow_align,
     'strong': allow_without_attributes,
     'sub': allow_without_attributes,
     'sup': allow_without_attributes,

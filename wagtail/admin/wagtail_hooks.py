@@ -25,7 +25,7 @@ from wagtail.admin.widgets import Button, ButtonWithDropdownFromHook, PageListin
 from wagtail.core import hooks
 from wagtail.core.models import UserPagePermissionsProxy
 from wagtail.core.permissions import collection_permission_policy
-from wagtail.core.whitelist import allow_without_attributes, attribute_rule, check_url
+from wagtail.core.whitelist import allow_without_attributes, attribute_rule, check_url, allow_align
 
 
 class ExplorerMenuItem(MenuItem):
@@ -310,7 +310,7 @@ def register_core_features(features):
             'hallo', element, HalloHeadingPlugin(element=element, order=order)
         )
         features.register_converter_rule('editorhtml', element, [
-            WhitelistRule(element, allow_without_attributes)
+            WhitelistRule(element, allow_align)
         ])
 
     features.register_editor_plugin(
@@ -520,7 +520,7 @@ def register_core_features(features):
             'description': ugettext('Link'),
             # We want to enforce constraints on which links can be pasted into rich text.
             # Keep only the attributes Wagtail needs.
-            'attributes': ['url', 'id', 'parentId'],
+            'attributes': ['url', 'target', 'id', 'parentId'],
             'whitelist': {
                 # Keep pasted links with http/https protocol, and not-pasted links (href = undefined).
                 'href': "^(http:|https:|undefined$)",

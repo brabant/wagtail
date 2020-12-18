@@ -14,7 +14,7 @@ app_net = {
 }
 
 youtube = {
-    "endpoint": "http://www.youtube.com/oembed",
+    "endpoint": "https://www.youtube.com/oembed",
     "urls": [
         r'^http(?:s)?://(?:[-\w]+\.)?youtube\.com/watch.+$',
         r'^http(?:s)?://(?:[-\w]+\.)?youtube\.com/v/.+$',

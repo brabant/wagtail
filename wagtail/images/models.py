@@ -286,6 +286,7 @@ class AbstractImage(CollectionMember, index.Indexed, models.Model):
             )
         except Rendition.DoesNotExist:
             # Generate the rendition image
+
             generated_image = filter.run(self, BytesIO())
 
             # Generate filename
@@ -293,13 +294,15 @@ class AbstractImage(CollectionMember, index.Indexed, models.Model):
             input_filename_without_extension, input_extension = os.path.splitext(input_filename)
 
             # A mapping of image formats to extensions
+
             FORMAT_EXTENSIONS = {
                 'jpeg': '.jpg',
                 'png': '.png',
                 'gif': '.gif',
+                'webp': '.webp',
             }
-
             output_extension = filter.spec.replace('|', '.') + FORMAT_EXTENSIONS[generated_image.format_name]
+
             if cache_key:
                 output_extension = cache_key + '.' + output_extension
 
@@ -432,6 +435,8 @@ class Filter:
                 return willow.save_as_png(output, optimize=True)
             elif output_format == 'gif':
                 return willow.save_as_gif(output)
+            elif output_format == 'webp':
+                return willow.save_as_webp(output)
 
     def get_cache_key(self, image):
         vary_parts = []
